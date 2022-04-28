@@ -13,9 +13,12 @@ def create_app():
 
     app.config["SQLALCHEMY_DATABASE_URI"] = env("SQLALCHEMY_DATABASE_URI")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["JWT_SECRET_KEY"] = env("JWT_SECRET_KEY")
 
     database.init_app(app)
     migration.init_app(app)
+    JWTManager(app)
     routes.init_app(app)
+    
 
     return app
