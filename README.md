@@ -4,29 +4,53 @@
 
 This project was developed using the following technologies:
 
+- [Python](https://docs.python.org/3/)
+- [PostgreSQL](https://www.postgresql.org/docs/)
 - [Flask](https://flask.palletsprojects.com/en/2.1.x/)
 - [Flask-SQLAlchemy](https://flask-sqlalchemy.palletsprojects.com/en/2.x/)
 - [Flask-JWT-Extended](https://flask-jwt-extended.readthedocs.io/en/stable/)
 - [Flask-HTTPAuth](https://flask-httpauth.readthedocs.io/en/latest/)
 - [Environs](https://pypi.org/project/environs/)
 
-## **Starting the project**
+## **Prerequisites**
 
-Clone into the repository and go into project's folder.
+<h2 align ='center'> Install: </h2>
+- Python 3.9
+- Pip library
 
+## **To get started**
+
+### Follow the steps:
+
+<h2 align ='center'> Clone into the repository and go into project's folder: </h2>
 ```bash
 $ git clone https://github.com/Kenzie-Academy-Brasil-Developers/q3-sprint6-autenticacao-e-autorizacao-lsmescolotto
 $ cd q3-sprint6-autenticacao-e-autorizacao-lsmescolotto
 ```
 
-Follow the steps:
+<h2 align ='center'> Create virtual enviroment: </h2> 
+  ```bash
+  $ python -m venv venv
+  ```
 
+<h2 align ='center'> Activate virtual enviroment: </h2>
+ ```
+  $ source venv/bin/activate
+  ```
+
+<h2 align ='center'> Install libraries: </h2>
 ```bash
-# Install dependencies
 $ pip install -r requirements.txt
-# Run flask
+```
+
+<h2 align ='center'> Run flask: </h2> 
+```bash
 $ flask run
 ```
+
+<h2 align ='center'> Start sending requests: </h2>
+
+- Use an API request sending platform like [Insomnia](https://docs.insomnia.rest/#)
 
 ## **base URL**
 
@@ -70,7 +94,7 @@ If the email adress is already in use:
 
 {"message":"Email already exists"}
 
-````
+```
 
 <h2 align ='center'> User Sign In </h2>
 <br/>
@@ -85,7 +109,7 @@ If the email adress is already in use:
 ```
 
 If the request is corret, the user will be signed in:
-`POST /login - RESPONSE FORMAT - STATUS 201`
+`POST /signin - RESPONSE FORMAT - STATUS 201`
 Flask-JWT-Extended
 
 ```json
@@ -94,25 +118,23 @@ Flask-JWT-Extended
 }
 ```
 
-`POST /login - RESPONSE FORMAT - STATUS 201`
 Flask-HTTPAuth
 
-````json
+```json
 {
   "api_key": "eyJhbGciOiJIUzI"
 }
+```
 
 If the user is not signed up, it will not be possible to login:
 
 `STATUS 404`
 
 ```json
-
 {"message": "user not found"}
+```
 
-````
-
-Caso a senha estiver incorreta
+If the password is not corret:
 
 `STATUS 400`
 
@@ -124,145 +146,107 @@ Caso a senha estiver incorreta
 
 <br/>
 
-<h2 align ='center'> Listar produtos </h2>
-<br/>
+## Authorization required routes 🔐
 
-`GET /products - FORMATO DA RESPOSTA - STATUS 200`
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Hamburguer",
-    "category": "Sanduíches",
-    "price": 14,
-    "img": "https://i.ibb.co/fpVHnZL/hamburguer.png"
-  },
-  {
-    "id": 2,
-    "name": "X-Burguer",
-    "category": "Sanduíches",
-    "price": 16,
-    "img": "https://i.ibb.co/djbw6LV/x-burgue.png"
-  },
-  {
-    "id": 3,
-    "name": "Big Kenzie",
-    "category": "Sanduíches",
-    "price": 18,
-    "img": "https://i.ibb.co/FYBKCwn/big-kenzie.png"
-  },
-  {
-    "id": 4,
-    "name": "Fanta Guaraná",
-    "category": "Bebidas",
-    "price": 5,
-    "img": "https://i.ibb.co/cCjqmPM/fanta-guarana.png"
-  },
-  {
-    "id": 5,
-    "name": "Coca",
-    "category": "Bebidas",
-    "price": 4.99,
-    "img": "https://i.ibb.co/fxCGP7k/coca-cola.png"
-  },
-  {
-    "id": 6,
-    "name": "Fanta",
-    "category": "Bebidas",
-    "price": 4.99,
-    "img": "https://i.ibb.co/QNb3DJJ/milkshake-ovomaltine.png"
-  }
-]
-```
-
-<h2 align ='center'> Pesquisar produtos </h2>
-<br/>
- 
- 
-`GET /products?Propriedade=NomeDoProduto - FORMATO DA REQUISIÇÃO`
- 
-`/products?name=Hamburguer`
- 
-Dando tudo certo, a resposta terá esse formato:
-`FORMATO DA RESPOSTA - STATUS 200`
-```json
-[
-{
-"id": 1,
-"name": "Hamburguer",
-"category": "Sanduíches",
-"price": 14,
-"img": "https://i.ibb.co/fpVHnZL/hamburguer.png"
-}
-]
-```
- 
-## Rotas que precisam de autorização 🔐
- 
-Rotas que necessitam de autorização devem ter no cabeçalho da requisição, o token no campo "Authotization":
+These routes need to have the token in the request Header "Authotization" field:
 `Authorization: Bearer {token}`
- 
-<h2 align ='center'> Adicionar produtos ao carrinho </h2>
+
+<h2 align ='center'> Update user </h2>
 <br/>
 
-`POST /cart - FORMATO DA REQUISIÇÃO`
-Além do token de autorização e dos dados do produto, é necessário informar a id (userId) do usuário.
+`PUT - REQUEST FORMAT`
 
-```json{
-"id": 1,
-"name": "Hamburguer",
-"category": "Sanduíches",
-"price": 14,
-"img": "https://i.ibb.co/fpVHnZL/hamburguer.png",
-"userId": 2
-}
-
-Dando tudo certo, a resposta terá esse formato:
-`FORMATO DA RESPOSTA - STATUS 201`
+```json
 {
-"id": 1,
-"name": "Hamburguer",
-"category": "Sanduíches",
-"price": 14,
-"img": "https://i.ibb.co/fpVHnZL/hamburguer.png",
-"userId": 2
+  "name": "Johana",
+  "last_name": "Doe",
+  "email": "johanadoe@mail.com",
+  "password": "123456"
 }
 ```
 
-Caso o id esteja errado ou seja inválido apresentará o seguinte erro:
+If the request is corret, the user will be updated:
+`PUT - RESPONSE FORMAT - STATUS 200`
+
+```json
+{
+  "name": "Johana",
+  "last_name": "Doe",
+  "email": "johanadoe@mail.com",
+  "password": "123456"
+}
+```
+
+If the user is not found:
 `STATUS 404`
 
-<h2 align ='center'> Listando produtos do carrinho </h2>
-<br/>
- 
- 
-`GET /cart - FORMATO DA RESPOSTA - STATUS 200`
- 
 ```json
-[
-{
-"id": 1,
-"name": "Hamburguer",
-"category": "Sanduíches",
-"price": 14,
-"img": "https://i.ibb.co/fpVHnZL/hamburguer.png"
-}
-]
-```
- 
-<h2 align ='center'> Deletar produtos do carrinho </h2>
-<br/>
- 
- 
-`DELETE /cart/IdDoProduto - FORMATO DA REQUISIÇÃO`
- 
-`/cart/1`
- 
-Dando tudo certo, a resposta terá esse formato:
-`FORMATO DA RESPOSTA - STATUS 200`
-```json
-{}
+{ "message": "user not found" }
 ```
 
-Feito por [Luiza Schmidt Mescolotto](https://www.linkedin.com/in/luiza-schmidt-mescolotto/)
+If the token is not corret:
+
+`STATUS 400`
+
+```json
+{ "message": "Unauthorized" }
+```
+
+<h2 align ='center'> Get user </h2>
+<br/>
+
+`GET - REQUEST FORMAT`
+No Body
+
+`GET - REPONSE FORMAT - STATUS 200`
+
+```json
+{
+  "email": "janedoe@mail.com",
+  "last_name": "Doe",
+  "name": "Jane"
+}
+```
+
+If the user is not found:
+`STATUS 404`
+
+```json
+{ "message": "user not found" }
+```
+
+If the token is not corret:
+
+`STATUS 400`
+
+```json
+{ "message": "Unauthorized" }
+```
+
+<h2 align ='center'> Delete user </h2>
+<br/>
+
+`DELETE - REQUEST FORMAT`
+No Body
+
+If the request is corret, the user will be deleted:
+`RESPONSE FORMAT - STATUS 204`
+No Body
+
+If the user is not found:
+`STATUS 404`
+
+```json
+{ "message": "user not found" }
+```
+
+If the token is not corret:
+
+`STATUS 400`
+
+```json
+{ "message": "Unauthorized" }
+```
+
+Developed by [Luiza Schmidt Mescolotto](https://www.linkedin.com/in/luiza-schmidt-mescolotto/)
+````
